@@ -17,7 +17,7 @@ import java.util.List;
 public class Schedule extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long scheduleid;
+    private Long scheduleId;
 
     @Column(name = "username", nullable = false)
     private String username;

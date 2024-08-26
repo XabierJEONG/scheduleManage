@@ -5,6 +5,9 @@ import com.sparta.schedulemanage.dto.ScheduleResponseDto;
 import com.sparta.schedulemanage.entity.Schedule;
 import com.sparta.schedulemanage.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,7 +44,7 @@ public class ScheduleService {
         schedule.update(requestDto);
         return scheduleId;
     }
-
+    // 삭제
     public Long deleteSchedule(Long scheduleId) {
         // 해당 메모가 DB에 존재하는지 확인
         Schedule schedule = findSchedule(scheduleId);
@@ -49,10 +52,28 @@ public class ScheduleService {
         return scheduleId;
 
     }
-
+    // 조회용 메서드
     public Schedule findSchedule(Long scheduleId) {
         return scheduleRepository.findById(scheduleId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
         );
+    }
+    // 페이지 조회용 메서드
+    public Page<ScheduleResponseDto> getSchedules(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
+
+        return schedules.map(schedule -> {
+            Long commentCount = schedule.getComments().isEmpty() ? null : (long) schedule.getComments().size();
+            return new ScheduleResponseDto(
+                    schedule.getScheduleId(),
+                    schedule.getScheduleTitle(),
+                    schedule.getScheduleContent(),
+                    commentCount,
+                    schedule.getCreateAt(),
+                    schedule.getModifiedAt(),
+                    schedule.getUsername()
+            );
+        });
     }
 }

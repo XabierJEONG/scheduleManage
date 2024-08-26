@@ -2,8 +2,8 @@ package com.sparta.schedulemanage.controller;
 
 import com.sparta.schedulemanage.dto.ScheduleRequestDto;
 import com.sparta.schedulemanage.dto.ScheduleResponseDto;
-import com.sparta.schedulemanage.entity.Schedule;
 import com.sparta.schedulemanage.service.ScheduleService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,12 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponseDto> findSchedule(@PathVariable Long scheduleId) {
         ScheduleResponseDto responseDto = scheduleService.readSchedule(scheduleId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+    // 페이지 조회
+    @GetMapping("/schedules")
+    public Page<ScheduleResponseDto> findScheduleList(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                     @RequestParam(value = "size", defaultValue = "10") int size) {
+        return scheduleService.getSchedules(page,size);
     }
     // 수정
     @PutMapping("/schedule/{scheduleId}")
