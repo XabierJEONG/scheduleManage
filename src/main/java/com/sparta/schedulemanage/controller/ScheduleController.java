@@ -2,7 +2,10 @@ package com.sparta.schedulemanage.controller;
 
 import com.sparta.schedulemanage.dto.ScheduleRequestDto;
 import com.sparta.schedulemanage.dto.ScheduleResponseDto;
+import com.sparta.schedulemanage.entity.Schedule;
 import com.sparta.schedulemanage.service.ScheduleService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,24 +17,29 @@ public class ScheduleController {
     public ScheduleController(ScheduleService scheduleService) {
         this.scheduleService = scheduleService;
     }
-
+    // 등록
     @PostMapping("/schedule")
-    public ScheduleResponseDto createSchedule(@RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.createSchedule(requestDto);
+    public ResponseEntity<ScheduleResponseDto> createSchedule(@RequestBody ScheduleRequestDto requestDto) {
+        ScheduleResponseDto responseDto = scheduleService.createSchedule(requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
-
-    @GetMapping("/schedule/{id}")
-    public ScheduleResponseDto findSchedule(@PathVariable Long id) {
-        return scheduleService.readSchedule(id);
+    // 단건 조회
+    @GetMapping("/schedule/{scheduleId}")
+    public ResponseEntity<ScheduleResponseDto> findSchedule(@PathVariable Long scheduleId) {
+        ScheduleResponseDto responseDto = scheduleService.readSchedule(scheduleId);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
-
-    @PutMapping("/schedule/{id}")
-    public Long updateSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto requestDto) {
-        return scheduleService.updateSchedule(id, requestDto);
+    // 수정
+    @PutMapping("/schedule/{scheduleId}")
+    public ResponseEntity<Void> updateSchedule(@PathVariable Long scheduleId,
+                                               @RequestBody ScheduleRequestDto requestDto) {
+        scheduleService.updateSchedule(scheduleId, requestDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @DeleteMapping("/schedule/{id}")
-    public Long deleteMemo(@PathVariable Long id) {
-        return scheduleService.deleteSchedule(id);
+    //삭제
+    @DeleteMapping("/schedule/{scheduleId}")
+    public ResponseEntity<Void> deleteMemo(@PathVariable Long scheduleId) {
+        scheduleService.deleteSchedule(scheduleId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

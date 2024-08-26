@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -14,7 +17,7 @@ import lombok.Setter;
 public class Schedule extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long scheduleid;
 
     @Column(name = "username", nullable = false)
     private String username;
@@ -24,6 +27,9 @@ public class Schedule extends Timestamped{
 
     @Column(name = "scheduleContent", nullable = false)
     private String scheduleContent;
+
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Schedule(ScheduleRequestDto requestDto) {
         this.username = requestDto.getUsername();

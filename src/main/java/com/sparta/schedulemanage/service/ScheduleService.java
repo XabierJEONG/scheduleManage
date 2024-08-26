@@ -7,7 +7,6 @@ import com.sparta.schedulemanage.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 @Service
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
@@ -21,40 +20,38 @@ public class ScheduleService {
         Schedule schedule = new Schedule(requestDto);
 
         // DB 저장
-        Schedule savememo = scheduleRepository.save(schedule);
+        Schedule saveSchedule = scheduleRepository.save(schedule);
 
         // Entity -> ResponseDto
-        ScheduleResponseDto scheduleResponseDto = new ScheduleResponseDto(schedule);
-
-        return scheduleResponseDto;
+        return new ScheduleResponseDto(saveSchedule);
     }
     // 조회
-    public ScheduleResponseDto readSchedule(Long id) {
-        Schedule schedule = findSchedule(id);
+    public ScheduleResponseDto readSchedule(Long scheduleId) {
+        Schedule schedule = findSchedule(scheduleId);
         return new ScheduleResponseDto(schedule);
     }
 
     // 수정
     @Transactional
-    public Long updateSchedule(Long id, ScheduleRequestDto requestDto) {
+    public Long updateSchedule(Long scheduleId, ScheduleRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
-        Schedule schedule = scheduleRepository.findById(id).orElseThrow(() ->
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
         );
         schedule.update(requestDto);
-        return id;
+        return scheduleId;
     }
 
-    public Long deleteSchedule(Long id) {
+    public Long deleteSchedule(Long scheduleId) {
         // 해당 메모가 DB에 존재하는지 확인
-        Schedule schedule = findSchedule(id);
+        Schedule schedule = findSchedule(scheduleId);
         scheduleRepository.delete(schedule);
-        return id;
+        return scheduleId;
 
     }
 
-    public Schedule findSchedule(Long id) {
-        return scheduleRepository.findById(id).orElseThrow(() ->
+    public Schedule findSchedule(Long scheduleId) {
+        return scheduleRepository.findById(scheduleId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
         );
     }
