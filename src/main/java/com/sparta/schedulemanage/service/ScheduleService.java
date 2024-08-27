@@ -47,7 +47,24 @@ public class ScheduleService {
         Schedule schedule = findSchedule(scheduleId);
         return new ScheduleResponseDto(schedule);
     }
+    // 페이지 조회
+    @Transactional
+    public Page<ScheduleResponseDto> getSchedules(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
 
+        return schedules.map(schedule -> {
+            Long commentCount = schedule.getComments().isEmpty() ? null : (long) schedule.getComments().size();
+            return new ScheduleResponseDto(
+                    schedule.getScheduleId(),
+                    schedule.getScheduleTitle(),
+                    schedule.getScheduleContent(),
+                    commentCount,
+                    schedule.getCreateAt(),
+                    schedule.getModifiedAt()
+            );
+        });
+    }
     // 수정
     @Transactional
     public Long updateSchedule(Long scheduleId, ScheduleRequestDto requestDto) {
@@ -72,21 +89,5 @@ public class ScheduleService {
                 new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
         );
     }
-    // 페이지 조회용 메서드
-    public Page<ScheduleResponseDto> getSchedules(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc(pageable);
 
-        return schedules.map(schedule -> {
-            Long commentCount = schedule.getComments().isEmpty() ? null : (long) schedule.getComments().size();
-            return new ScheduleResponseDto(
-                    schedule.getScheduleId(),
-                    schedule.getScheduleTitle(),
-                    schedule.getScheduleContent(),
-                    commentCount,
-                    schedule.getCreateAt(),
-                    schedule.getModifiedAt()
-            );
-        });
-    }
 }

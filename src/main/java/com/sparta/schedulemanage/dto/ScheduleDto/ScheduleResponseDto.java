@@ -1,10 +1,13 @@
 package com.sparta.schedulemanage.dto.ScheduleDto;
 
 import com.sparta.schedulemanage.entity.Schedule;
+import com.sparta.schedulemanage.entity.User;
+import com.sparta.schedulemanage.entity.UserSchedule;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,7 +19,7 @@ public class ScheduleResponseDto {
     private Long commentCount;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
-    private String userId;
+    private List<UserInfo> users = new ArrayList<>();
 
     public ScheduleResponseDto(Schedule schedule) {
         this.scheduleId = schedule.getScheduleId();
@@ -24,7 +27,25 @@ public class ScheduleResponseDto {
         this.scheduleContent = schedule.getScheduleContent();
         this.createAt = schedule.getCreateAt();
         this.modifiedAt = schedule.getModifiedAt();
+        for (UserSchedule userSchedule : schedule.getUserSchedules()) {
+            User user = userSchedule.getUser();
+            this.users.add(new UserInfo(user));
+        }
     }
+    // 사용자 정보만 포함하는 내부 클래스
+    @Getter
+    @Setter
+    public static class UserInfo {
+        private Long userId;
+        private String username;
+        private String email;
+        public UserInfo(User user) {
+            this.userId = user.getUserId();
+            this.username = user.getUsername();
+            this.email = user.getEmail();
+        }
+    }
+
     public ScheduleResponseDto(Long scheduleId,
                                String scheduleTitle,
                                String scheduleContent,
