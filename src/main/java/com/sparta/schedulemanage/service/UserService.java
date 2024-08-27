@@ -33,18 +33,18 @@ public class UserService {
     }
     // 수정
     @Transactional
-    public Long updateUser(Long userId, UserRequestDto requestDto) {
+    public void updateUser(Long userId, UserRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new IllegalArgumentException("선택한 유저는 존재하지 않습니다.")
         );
         user.update(requestDto);
-        return userId;
+        return;
     }
     // 삭제
-    public Long deleteUser(Long userId) {
+    public void deleteUser(Long userId) {
         User user = findById(userId);
         userRepository.delete(user);
-        return userId;
+        return;
     }
     // 조회용메서드
     private User findById(Long userId) {

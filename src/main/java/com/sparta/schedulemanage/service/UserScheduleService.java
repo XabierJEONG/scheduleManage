@@ -33,28 +33,16 @@ public class UserScheduleService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 일정을 찾을 수 없습니다."));
 
         UserSchedule userSchedule = new UserSchedule(user, schedule);
-        UserSchedule savedUserSchedule = userScheduleRepository.save(userSchedule);
-
-        return new UserScheduleResponseDto(
-                savedUserSchedule.getId(),
-                savedUserSchedule.getUser().getUserId(),
-                savedUserSchedule.getSchedule().getScheduleId()
-        );
+        userScheduleRepository.save(userSchedule);
+        return new UserScheduleResponseDto(userSchedule);
     }
     // 관계 조회
-    public List<UserScheduleResponseDto> getUserSchedulesByUserId(Long userId) {
-        List<UserSchedule> userSchedules = userScheduleRepository.findByUser_UserId(userId);
-        return userSchedules.stream()
-                .map(us -> new UserScheduleResponseDto(us.getId(), us.getUser().getUserId(), us.getSchedule().getScheduleId()))
-                .collect(Collectors.toList());
+    public List<UserScheduleResponseDto> getUserSchedulesByScheduleId(Long scheduleId) {
+        List<UserSchedule> userSchedules = userScheduleRepository.findBySchedule_ScheduleId(scheduleId);
+        return userSchedules.stream().map(UserScheduleResponseDto::new).collect(Collectors.toList());
     }
     // 관계 삭제
     public void deleteUserSchedule(Long id) {
-        UserSchedule userSchedule = userScheduleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("UserSchedule not found"));
-
-        userScheduleRepository.delete(userSchedule);
+        userScheduleRepository.deleteById(id);
     }
-
-
 }

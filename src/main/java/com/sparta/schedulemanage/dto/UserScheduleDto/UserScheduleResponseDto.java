@@ -1,5 +1,6 @@
 package com.sparta.schedulemanage.dto.UserScheduleDto;
 
+import com.sparta.schedulemanage.entity.UserSchedule;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,9 +13,9 @@ public class UserScheduleResponseDto {
     private Long userId;
     private Long scheduleId;
 
-    public UserScheduleResponseDto(Long id, Long userId, Long scheduleId) {
-        this.id = id;
-        this.userId = userId;
-        this.scheduleId = scheduleId;
+    public UserScheduleResponseDto(UserSchedule userSchedule) {
+        this.id = userSchedule.getId();
+        this.scheduleId = userSchedule.getSchedule().getScheduleId();
+        this.userId = userSchedule.getUser().getUserId();
     }
 }

@@ -13,11 +13,9 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserScheduleController {
     private final UserScheduleService userScheduleService;
-
     public UserScheduleController(UserScheduleService userScheduleService) {
         this.userScheduleService = userScheduleService;
     }
-
     // 일정 내 추가 유저 등록
     @PostMapping("/UserSchedule")
     public ResponseEntity<UserScheduleResponseDto> createUserSchedule(@RequestBody UserScheduleRequestDto requestDto) {
@@ -25,9 +23,9 @@ public class UserScheduleController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
     // 조회
-    @GetMapping("/UserSchedule/{id}")
-    public ResponseEntity<List<UserScheduleResponseDto>> findUserSchedule(@PathVariable Long userId) {
-        List<UserScheduleResponseDto> responseDto = userScheduleService.getUserSchedulesByUserId(userId);
+    @GetMapping("/UserSchedule/schedule/{scheduleId}")
+    public ResponseEntity<List<UserScheduleResponseDto>> findUserScheduleByUserId(@PathVariable Long scheduleId) {
+        List<UserScheduleResponseDto> responseDto = userScheduleService.getUserSchedulesByScheduleId(scheduleId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
     // 삭제
