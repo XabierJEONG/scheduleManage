@@ -16,6 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
     // 등록
+    @Transactional
     public UserResponseDto createUser(UserRequestDto requestDto) {
         User user = new User(requestDto);
         User saveUser = userRepository.save(user);

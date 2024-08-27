@@ -26,6 +26,7 @@ public class ScheduleService {
         this.userScheduleRepository = userScheduleRepository;
     }
     // 등록
+    @Transactional
     public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
         // RequestDto -> Entity
         Schedule schedule = new Schedule(requestDto);

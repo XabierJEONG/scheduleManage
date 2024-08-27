@@ -21,6 +21,7 @@ public class CommentService {
         this.scheduleRepository = scheduleRepository;
     }
     // 등록
+    @Transactional
     public CommentResponseDto createComment(CommentRequestDto requestDto) {
         // 찾기
         Schedule schedule = scheduleRepository.findById(requestDto.getScheduleId()).orElseThrow(() ->
