@@ -1,6 +1,6 @@
 package com.sparta.schedulemanage.entity;
 
-import com.sparta.schedulemanage.dto.ScheduleRequestDto;
+import com.sparta.schedulemanage.dto.ScheduleDto.ScheduleRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +19,6 @@ public class Schedule extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long scheduleId;
 
-    @Column(name = "username", nullable = false)
-    private String username;
-
     @Column(name = "scheduleTitle", nullable = false)
     private String scheduleTitle;
 
@@ -31,14 +28,15 @@ public class Schedule extends Timestamped{
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSchedule> userSchedules;
+
     public Schedule(ScheduleRequestDto requestDto) {
-        this.username = requestDto.getUsername();
         this.scheduleTitle = requestDto.getScheduleTitle();
         this.scheduleContent = requestDto.getScheduleContent();
     }
 
     public void update(ScheduleRequestDto requestDto) {
-        this.username = requestDto.getUsername();
         this.scheduleTitle = requestDto.getScheduleTitle();
         this.scheduleContent = requestDto.getScheduleContent();
     }

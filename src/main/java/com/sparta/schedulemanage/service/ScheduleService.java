@@ -1,9 +1,13 @@
 package com.sparta.schedulemanage.service;
 
-import com.sparta.schedulemanage.dto.ScheduleRequestDto;
-import com.sparta.schedulemanage.dto.ScheduleResponseDto;
+import com.sparta.schedulemanage.dto.ScheduleDto.ScheduleRequestDto;
+import com.sparta.schedulemanage.dto.ScheduleDto.ScheduleResponseDto;
 import com.sparta.schedulemanage.entity.Schedule;
+import com.sparta.schedulemanage.entity.User;
+import com.sparta.schedulemanage.entity.UserSchedule;
 import com.sparta.schedulemanage.repository.ScheduleRepository;
+import com.sparta.schedulemanage.repository.UserRepository;
+import com.sparta.schedulemanage.repository.UserScheduleRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,17 +17,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
+    private final UserScheduleRepository userScheduleRepository;
 
-    public ScheduleService(ScheduleRepository scheduleRepository) {
+    public ScheduleService(ScheduleRepository scheduleRepository, UserRepository userRepository, UserScheduleRepository userScheduleRepository) {
         this.scheduleRepository = scheduleRepository;
+        this.userRepository = userRepository;
+        this.userScheduleRepository = userScheduleRepository;
     }
     // 등록
     public ScheduleResponseDto createSchedule(ScheduleRequestDto requestDto) {
         // RequestDto -> Entity
         Schedule schedule = new Schedule(requestDto);
 
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(() ->
+                new IllegalArgumentException("해당하는 유저가 없습니다."));
+
         // DB 저장
         Schedule saveSchedule = scheduleRepository.save(schedule);
+
+        UserSchedule userSchedule = new UserSchedule(user, saveSchedule);
+        userScheduleRepository.save(userSchedule);
 
         // Entity -> ResponseDto
         return new ScheduleResponseDto(saveSchedule);
@@ -71,8 +85,7 @@ public class ScheduleService {
                     schedule.getScheduleContent(),
                     commentCount,
                     schedule.getCreateAt(),
-                    schedule.getModifiedAt(),
-                    schedule.getUsername()
+                    schedule.getModifiedAt()
             );
         });
     }

@@ -1,7 +1,7 @@
 package com.sparta.schedulemanage.controller;
 
-import com.sparta.schedulemanage.dto.CommentRequestDto;
-import com.sparta.schedulemanage.dto.CommentResponseDto;
+import com.sparta.schedulemanage.dto.CommentDto.CommentRequestDto;
+import com.sparta.schedulemanage.dto.CommentDto.CommentResponseDto;
 import com.sparta.schedulemanage.service.CommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

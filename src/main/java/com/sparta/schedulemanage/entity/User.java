@@ -1,10 +1,12 @@
 package com.sparta.schedulemanage.entity;
 
-import com.sparta.schedulemanage.dto.UserRequestDto;
+import com.sparta.schedulemanage.dto.UserDto.UserRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +23,9 @@ public class User extends Timestamped {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserSchedule> userSchedules;
 
     public User (UserRequestDto requestDto) {
         this.username = requestDto.getUsername();

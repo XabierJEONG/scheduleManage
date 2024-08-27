@@ -1,7 +1,7 @@
 package com.sparta.schedulemanage.controller;
 
-import com.sparta.schedulemanage.dto.ScheduleRequestDto;
-import com.sparta.schedulemanage.dto.ScheduleResponseDto;
+import com.sparta.schedulemanage.dto.ScheduleDto.ScheduleRequestDto;
+import com.sparta.schedulemanage.dto.ScheduleDto.ScheduleResponseDto;
 import com.sparta.schedulemanage.service.ScheduleService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.sparta.schedulemanage.service;
 
-import com.sparta.schedulemanage.dto.UserRequestDto;
-import com.sparta.schedulemanage.dto.UserResponseDto;
+import com.sparta.schedulemanage.dto.UserDto.UserRequestDto;
+import com.sparta.schedulemanage.dto.UserDto.UserResponseDto;
 import com.sparta.schedulemanage.entity.User;
 import com.sparta.schedulemanage.repository.UserRepository;
 import jakarta.transaction.Transactional;

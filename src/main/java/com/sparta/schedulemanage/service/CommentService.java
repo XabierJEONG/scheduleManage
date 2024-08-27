@@ -1,7 +1,7 @@
 package com.sparta.schedulemanage.service;
 
-import com.sparta.schedulemanage.dto.CommentRequestDto;
-import com.sparta.schedulemanage.dto.CommentResponseDto;
+import com.sparta.schedulemanage.dto.CommentDto.CommentRequestDto;
+import com.sparta.schedulemanage.dto.CommentDto.CommentResponseDto;
 import com.sparta.schedulemanage.entity.Comment;
 import com.sparta.schedulemanage.entity.Schedule;
 import com.sparta.schedulemanage.repository.CommentRepository;

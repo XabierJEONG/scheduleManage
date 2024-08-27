@@ -1,11 +1,10 @@
-package com.sparta.schedulemanage.dto;
+package com.sparta.schedulemanage.dto.ScheduleDto;
 
 import lombok.Getter;
 
 @Getter
 public class ScheduleRequestDto {
-    private String username;
+    private Long userId;
     private String scheduleTitle;
     private String scheduleContent;
-
 }
