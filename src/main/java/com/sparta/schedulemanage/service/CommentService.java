@@ -22,17 +22,14 @@ public class CommentService {
     }
     // 등록
     public CommentResponseDto createComment(CommentRequestDto requestDto) {
-        // Schedule 찾기
+        // 찾기
         Schedule schedule = scheduleRepository.findById(requestDto.getScheduleId()).orElseThrow(() ->
-                new IllegalArgumentException("해당 일정이 존재하지 않습니다.")
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다.")
         );
-
         // RequestDto -> Entity
         Comment comment = new Comment(schedule, requestDto);
-
         // DB 저장
         Comment saveComment = commentRepository.save(comment);
-
         // Entity -> ResponseDto
         return new CommentResponseDto(saveComment);
     }
@@ -42,22 +39,20 @@ public class CommentService {
         return new CommentResponseDto(comment);
     }
     //다건 조회
-
     public List<CommentResponseDto> readCommentList() {
         return commentRepository.findAllByOrderByModifiedAtDesc().stream().map(CommentResponseDto::new).toList();
     }
-
     // 수정
     @Transactional
     public Long updateComment(Long commentId, CommentRequestDto requestDto) {
         // 해당 메모가 DB에 존재하는지 확인
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
-                new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
+                new IllegalArgumentException("선택한 댓글은 존재하지 않습니다.")
         );
         comment.update(requestDto);
         return commentId;
     }
-
+    // 삭제
     public Long deleteComment(Long commentId) {
         // 해당 메모가 DB에 존재하는지 확인
         Comment comment = findComment(commentId);
@@ -65,10 +60,10 @@ public class CommentService {
         return commentId;
 
     }
-
+    // 조회용 메서드
     public Comment findComment(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(() ->
-                new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
+                new IllegalArgumentException("선택한 댓글은 존재하지 않습니다.")
         );
     }
 }
